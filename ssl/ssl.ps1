@@ -18,6 +18,10 @@ Write-Output $dnsAndIps >> extfile.cnf
 Write-Output "Create cert.pem"
 openssl x509 -req -sha256 -days 3650 -in cert.csr -CA ca.pem -CAkey ca-key.pem -out cert.pem -extfile extfile.cnf -CAcreateserial
 
+Write-Output "Create fullchain certificate"
+cat cert.pem > fullchain.pem
+cat ca.pem >> fullchain.pem
+
 Write-Output "Create cert.pfx"
 openssl rsa -in cert-key.pem -out private.key
 openssl pkcs12 -export -out certificate.pfx -inkey private.key -in cert.pem -certfile cert.pem
